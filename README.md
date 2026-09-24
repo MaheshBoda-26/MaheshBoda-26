@@ -10,9 +10,3 @@ Hi, I am Mahesh Boda, a Computer Science student and AI builder who likes turnin
 ![](https://github-readme-stats.shion.dev/api?username=MaheshBoda-26&theme=dark&hide_border=false&include_all_commits=true&count_private=true)<br/>
 ![](https://streak-stats.demolab.com/?user=MaheshBoda-26&theme=dark&hide_border=false)<br/>
 
-
-<img src="https://github-readme-stats.vercel.app/api?username=MaheshBoda-26&show_icons=true&count_private=true&theme=default" alt="GitHub Statistics" />
-
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=MaheshBoda-26&layout=compact&theme=default" alt="Most used languages" />
-
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=MaheshBoda-26&theme=default" alt="GitHub Streak" />

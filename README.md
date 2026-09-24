@@ -1,12 +1,144 @@
-#  About Me:
-Hi, I am Mahesh Boda, a Computer Science student and AI builder who likes turning ideas into practical products.<br><br>I focus on building useful software with React, TypeScript, Vite, Tailwind CSS, Supabase, Flask, and Python. I enjoy working on AI apps, automation workflows, and full-stack projects that solve real problems for users and businesses.<br><br>My interests include:<br><br>* AI engineering<br>* Full stack developmemt<br>* Web development<br>* SaaS product building<br>* Automation<br>* Machine learning<br>* Problem solving and DSA<br><br>I am especially interested in creating tools that save time, improve workflow, and make complex tasks easier to use. I like learning fast, building often, and improving every project with better design, better logic, and cleaner code.<br><br>Right now, I am exploring AI-powered products, modern frontend systems, backend APIs, and scalable app architecture. I also spend time practicing coding problems and sharpening my fundamentals.<br><br>I value:<br><br>* Clean code<br>* Simple user experiences<br>* Practical solutions<br>* Fast iteration<br>* Continuous learning<br><br>Outside of code, I like exploring new tech trends, building side projects, and finding product ideas that have real-world value.<br><br>You can find my work here as I keep learning, building, and shipping.<br>
+<div align="center">
 
+<img src="https://readme-typing-svg.demolab.com/?lines=AI+Engineer+in+Progress;Building+AI+Agents+%26+RAG+Systems;Full-Stack+Developer;Generative+AI+Enthusiast;Building+Products+that+Solve+Real+Problems&font=Fira%20Code&center=true&width=850&height=55&color=58A6FF&vCenter=true&size=23" alt="Typing intro" />
 
-# 💻 Tech Stack:
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) ![Render](https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white) ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white) ![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=for-the-badge&logo=angularjs&logoColor=white) ![EJS](https://img.shields.io/badge/ejs-%23B4CA65.svg?style=for-the-badge&logo=ejs&logoColor=black) ![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white) ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Nodemon](https://img.shields.io/badge/NODEMON-%23323330.svg?style=for-the-badge&logo=nodemon&logoColor=%BBDEAD) ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white) ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white) ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white) ![AmazonDynamoDB](https://img.shields.io/badge/Amazon%20DynamoDB-4053D6?style=for-the-badge&logo=Amazon%20DynamoDB&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34) ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white) ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white) ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white) ![Framer](https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white) ![Adobe](https://img.shields.io/badge/adobe-%23FF0000.svg?style=for-the-badge&logo=adobe&logoColor=white) ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=for-the-badge&logo=Matplotlib&logoColor=black) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Scipy](https://img.shields.io/badge/SciPy-%230C55A5.svg?style=for-the-badge&logo=scipy&logoColor=%white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![GitLab](https://img.shields.io/badge/gitlab-%23181717.svg?style=for-the-badge&logo=gitlab&logoColor=white) ![Playwright](https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white) ![Puppeteer](https://img.shields.io/badge/Puppeteer-%2340B5A4.svg?style=for-the-badge&logo=Puppeteer&logoSize=auto&logoColor=black) ![Sentry](https://img.shields.io/badge/sentry-%23362D59.svg?style=for-the-badge&logo=sentry&logoColor=white) ![Vitest](https://img.shields.io/badge/-Vitest-252529?style=for-the-badge&logo=vitest&logoColor=FCC72B) ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white) ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) ![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white)
+<h3><code>mahesh@github ~ $ whoami</code></h3>
 
+<p>
+  <img src="https://komarev.com/ghpvc/?username=MaheshBoda-26&style=flat-square&color=58A6FF" alt="Profile views" />
+</p>
 
-# 📊 GitHub Stats:
-![](https://github-readme-stats.shion.dev/api?username=MaheshBoda-26&theme=dark&hide_border=false&include_all_commits=true&count_private=true)<br/>
-![](https://streak-stats.demolab.com/?user=MaheshBoda-26&theme=dark&hide_border=false)<br/>
+<table>
+<tr>
+<td valign="top" width="55%">
 
+### 👨‍💻 Mahesh Boda
+
+Final-year B.Tech Computer Science & Engineering student focused on AI engineering and full-stack development.
+
+I build:
+
+- AI agents and agentic workflows
+- RAG pipelines and AI infrastructure
+- Multimodal AI applications
+- AI-powered SaaS products
+- Full-stack web applications
+
+I enjoy turning ideas into working products, learning new AI systems, and solving problems with clean architecture and practical engineering.
+
+</td>
+
+<td valign="top" width="45%">
+
+```text
+┌──────────────────────────────────┐
+│        MAHESH BODA / AI          │
+├──────────────────────────────────┤
+│ Focus                            │
+│ ├─ AI Engineering                │
+│ ├─ Generative AI                 │
+│ ├─ AI Agents                     │
+│ ├─ RAG Systems                   │
+│ ├─ Full-Stack Development        │
+│ └─ SaaS Products                 │
+│                                  │
+│ Currently Learning               │
+│ ├─ Agentic Workflows             │
+│ ├─ LLM Applications              │
+│ ├─ AI Observability              │
+│ └─ Scalable Backend Systems      │
+└──────────────────────────────────┘
+```
+
+</td>
+</tr>
+</table>
+
+<h3><code>mahesh@github ~ $ ./stack.sh</code></h3>
+
+<p>
+  <img src="https://skillicons.dev/icons?i=python,typescript,javascript,react,nextjs,nodejs,express,fastapi,flask,tailwind,vite,supabase,postgres,mongodb,docker,git,github,vercel,figma,pytorch,tensorflow&perline=7" alt="Tech stack" />
+</p>
+
+<h3><code>mahesh@github ~ $ ./projects.sh</code></h3>
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🔎 TruthLens AI
+
+Deepfake and media authenticity analysis using local ML, image forensics, metadata analysis, Grad-CAM, and Gemini-powered reasoning.
+
+<a href="https://github.com/MaheshBoda-26/TruthLens">
+  <img src="https://img.shields.io/badge/View_Repository-161B22?style=for-the-badge&logo=github&logoColor=white" />
+</a>
+
+</td>
+<td width="50%" valign="top">
+
+### 🧠 RAG Trace Debugger
+
+Observability tooling for RAG pipelines that traces retrieval, reranking, context assembly, and generation, then helps localize failures.
+
+<a href="https://github.com/MaheshBoda-26/RAG_Trace_Debugger">
+  <img src="https://img.shields.io/badge/View_Repository-161B22?style=for-the-badge&logo=github&logoColor=white" />
+</a>
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 🌾 AI Agent for Farming
+
+AI-powered farming assistant for crop recommendations, disease analysis, weather planning, market information, and multilingual support.
+
+<a href="https://github.com/MaheshBoda-26/AI-Agent-For-Farming">
+  <img src="https://img.shields.io/badge/View_Repository-161B22?style=for-the-badge&logo=github&logoColor=white" />
+</a>
+
+</td>
+<td width="50%" valign="top">
+
+### 🔗 Hybrid RAG Pipeline
+
+RAG system with dense retrieval, BM25, reciprocal rank fusion, reranking, confidence gating, citations, and evaluation metrics.
+
+<a href="https://github.com/MaheshBoda-26/RAG-Pipeline-With-Hybrid-Search">
+  <img src="https://img.shields.io/badge/View_Repository-161B22?style=for-the-badge&logo=github&logoColor=white" />
+</a>
+
+</td>
+</tr>
+</table>
+
+<h3><code>mahesh@github ~ $ ./connect.sh</code></h3>
+
+<p>
+  <a href="mailto:maheshnayakboda115@gmail.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
+  <a href="https://github.com/MaheshBoda-26">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+</p>
+
+<h3><code>mahesh@github ~ $ ./stats.sh</code></h3>
+
+<p>
+  <img src="https://github-readme-stats.vercel.app/api?username=MaheshBoda-26&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" width="49%" alt="GitHub stats" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=MaheshBoda-26&theme=github-dark-blue&hide_border=true" width="49%" alt="GitHub streak" />
+</p>
+
+<p>
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=MaheshBoda-26&theme=github-compact&hide_border=true&area=true" width="95%" alt="GitHub activity graph" />
+</p>
+
+<h3><code>mahesh@github ~ $ exit</code></h3>
+
+<p>
+  <i>Build → Break → Learn → Ship → Repeat.</i>
+</p>
+
+</div>

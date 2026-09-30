@@ -6,7 +6,7 @@
 
 ## About Me
 
-I'm Mahesh Boda, a Computer Science student and AI builder focused on turning ideas into practical products.
+I'm Mahesh Boda, AI Thinker, a Computer Science student and AI builder focused on turning ideas into practical products.
 
 - AI Engineering and Generative AI
 - Full-Stack Web Development

@@ -8,12 +8,12 @@
 
 I'm Mahesh Boda, AI Thinker, a Computer Science student and AI builder focused on turning ideas into practical products.
 
-- AI Engineering and Generative AI
-- Full-Stack Web Development
-- AI Agents and Automation
-- React, TypeScript, Python, Flask, Supabase
-- Building AI-powered products and SaaS tools
-- Exploring LLMs, RAG, and agentic workflows
+- AI Engineering and Generative AI.
+- Full-Stack Web Development.
+- AI Agents and Automation.
+- React, TypeScript, Python, Flask, Supabase.
+- Building AI-powered products and SaaS tools.
+- Exploring LLMs, RAG, and agentic workflows.
 
 Outside of coding, I explore new AI technologies, build side projects, and experiment with product ideas that have real-world value.
 

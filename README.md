@@ -29,14 +29,10 @@
 
 <h3><code>mahesh@github ~ $ ./links.sh</code></h3>
 
-<p><b>AI Engineer</b></p>
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-maheshboda.vercel.app-0d1117?style=for-the-badge&logo=vercel&logoColor=white)](https://maheshboda.vercel.app)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-maheshboda-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/maheshboda/)
-[![Twitter](https://img.shields.io/badge/Twitter-@maheshboda006-1DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://www.x.com/maheshboda006/)
-[![Instagram](https://img.shields.io/badge/Instagram-@maheshboda06-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/maheshboda06)
-[![Email](https://img.shields.io/badge/Email-maheshboda2603%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:maheshboda2603@gmail.com)
-
-<br>
+<a href="https://twitter.com/maheshboda006" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="maheshboda006" height="30" width="40" /></a>
+<a href="https://linkedin.com/in/maheshboda" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="maheshboda" height="30" width="40" /></a>
+<a href="https://instagram.com/maheshboda06" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="maheshboda06" height="30" width="40" /></a>
+<a href="https://medium.com/@maheshboda06" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/medium.svg" alt="@maheshboda06" height="30" width="40" /></a>
+</p>
 
 </div>

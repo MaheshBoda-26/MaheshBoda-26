@@ -1,114 +1,99 @@
 #!/usr/bin/env python3
 """
-fetch_contributions.py  —  Step 5a
-Usage:  python scripts/fetch_contributions.py
+Scrape real daily contribution counts from GitHub's public, unauthenticated
+contributions endpoint (the same fragment the profile page itself uses) and
+write data/contributions.json with raw days, derived stats (current streak,
+longest streak, best day, monthly totals), and week grid.
 
-Fetches GitHub contribution calendar HTML from the public profile page,
-parses day cells with BeautifulSoup, and writes data/contributions.json
-with raw days plus derived stats.
+No token, no auth, no GraphQL -- just the public HTML GitHub already serves.
+Run daily by .github/workflows/update-profile-art.yml.
 """
-
+import datetime
 import json
+import os
 import pathlib
 import re
 import sys
-from datetime import date, datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
 
+USERNAME = os.environ.get("GH_PROFILE_USER", "MaheshBoda-26")
+URL = f"https://github.com/users/{USERNAME}/contributions"
 SCRIPT_DIR = pathlib.Path(__file__).parent
 DATA_DIR = SCRIPT_DIR.parent / "data"
-OUT_JSON = DATA_DIR / "contributions.json"
-
-USERNAME = "MaheshBoda-26"
-URL = f"https://github.com/users/{USERNAME}/contributions"
+OUT_PATH = DATA_DIR / "contributions.json"
 
 PALETTE = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353", "#69f0a0"]
 
 
-def fetch_html() -> str:
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-    }
-    resp = requests.get(URL, headers=headers, timeout=15)
+def fetch_days():
+    resp = requests.get(URL, headers={"User-Agent": "profile-readme-bot/1.0"}, timeout=30)
     resp.raise_for_status()
-    return resp.text
+    soup = BeautifulSoup(resp.text, "html.parser")
 
+    cells = soup.select("td.ContributionCalendar-day")
+    if not cells:
+        print("no calendar cells found -- github markup may have changed", file=sys.stderr)
+        sys.exit(1)
 
-def parse_contributions(html: str) -> list[dict]:
-    soup = BeautifulSoup(html, "html.parser")
     days = []
-
-    for td in soup.select("td.ContributionCalendar-day"):
-        data_date = td.get("data-date")
-        data_level = td.get("data-level")
-        data_count = td.get("data-count")
-
-        if not data_date:
+    for td in cells:
+        date_str = td.get("data-date")
+        if not date_str:
             continue
+        td_id = td.get("id")
+        tooltip_el = soup.find("tool-tip", attrs={"for": td_id}) if td_id else None
+        text = tooltip_el.get_text(strip=True) if tooltip_el else ""
+        if re.search(r"no contributions", text, re.I):
+            count = 0
+        else:
+            m = re.match(r"(\d+)", text)
+            count = int(m.group(1)) if m else 0
 
-        level = int(data_level) if data_level else 0
-        count = int(data_count) if data_count else 0
-
+        level = int(td.get("data-level") or 0)
         days.append({
-            "date": data_date,
+            "date": date_str,
             "count": count,
             "level": level,
             "color": PALETTE[min(level, len(PALETTE) - 1)]
         })
 
+    days.sort(key=lambda d: d["date"])
     return days
 
 
-def compute_stats(days: list[dict]) -> dict:
-    if not days:
-        return {}
+def compute_current_streak(days):
+    idx = len(days) - 1
+    if idx >= 0 and days[idx]["count"] == 0:
+        idx -= 1  # today isn't over yet -- don't break the streak on it
+    streak = 0
+    end_idx = idx
+    while idx >= 0 and days[idx]["count"] > 0:
+        streak += 1
+        idx -= 1
+    start_idx = idx + 1
+    if streak == 0:
+        return 0, None, None
+    return streak, days[start_idx]["date"], days[end_idx]["date"]
 
-    days_sorted = sorted(days, key=lambda d: d["date"])
-    total = sum(d["count"] for d in days_sorted)
 
-    today = date.today()
-    current_streak = 0
-    check_date = today
-    day_set = {d["date"]: d for d in days_sorted}
-
-    while True:
-        ds = check_date.isoformat()
-        if ds in day_set and day_set[ds]["count"] > 0:
-            current_streak += 1
-            check_date -= timedelta(days=1)
-        else:
-            break
-
-    longest_streak = 0
-    current = 0
-    for d in days_sorted:
+def compute_longest_streak(days):
+    longest = run = 0
+    longest_start = longest_end = None
+    run_start_idx = None
+    for i, d in enumerate(days):
         if d["count"] > 0:
-            current += 1
-            longest_streak = max(longest_streak, current)
+            if run == 0:
+                run_start_idx = i
+            run += 1
+            if run > longest:
+                longest = run
+                longest_start = days[run_start_idx]["date"]
+                longest_end = days[i]["date"]
         else:
-            current = 0
-
-    best_day = max(days_sorted, key=lambda d: d["count"])
-
-    monthly = {}
-    for d in days_sorted:
-        dt = datetime.fromisoformat(d["date"])
-        key = dt.strftime("%Y-%m")
-        monthly[key] = monthly.get(key, 0) + d["count"]
-
-    first_date = days_sorted[0]["date"]
-    last_date = days_sorted[-1]["date"]
-
-    return {
-        "total_contributions": total,
-        "current_streak": current_streak,
-        "longest_streak": longest_streak,
-        "best_day": {"date": best_day["date"], "count": best_day["count"]},
-        "monthly_totals": monthly,
-        "date_range": {"start": first_date, "end": last_date},
-    }
+            run = 0
+    return longest, longest_start, longest_end
 
 
 def build_week_grid(days: list[dict]) -> list[list[dict | None]]:
@@ -116,18 +101,17 @@ def build_week_grid(days: list[dict]) -> list[list[dict | None]]:
         return []
 
     days_by_date = {d["date"]: d for d in days}
-
     first_date = min(days_by_date.keys())
-    first_dt = datetime.fromisoformat(first_date)
+    first_dt = datetime.date.fromisoformat(first_date)
     days_to_subtract = (first_dt.weekday() + 1) % 7
-    grid_start = first_dt - timedelta(days=days_to_subtract)
+    grid_start = first_dt - datetime.timedelta(days=days_to_subtract)
 
     grid = []
     for w in range(53):
         week = []
         for d in range(7):
-            cell_date = grid_start + timedelta(weeks=w, days=d)
-            cell_key = cell_date.date().isoformat()
+            cell_date = grid_start + datetime.timedelta(weeks=w, days=d)
+            cell_key = cell_date.isoformat()
             if cell_key in days_by_date:
                 week.append(days_by_date[cell_key])
             else:
@@ -137,32 +121,67 @@ def build_week_grid(days: list[dict]) -> list[list[dict | None]]:
     return grid
 
 
-def main():
-    print(f"[1/3] Fetching contributions from {URL} …")
-    html = fetch_html()
+def build_data(days):
+    total = sum(d["count"] for d in days)
+    active_days = sum(1 for d in days if d["count"] > 0)
+    best = max(days, key=lambda d: d["count"]) if days else {"date": "", "count": 0}
+    cur_len, cur_start, cur_end = compute_current_streak(days)
+    long_len, long_start, long_end = compute_longest_streak(days)
 
-    print("[2/3] Parsing HTML …")
-    days = parse_contributions(html)
-    print(f"      Parsed {len(days)} days")
+    monthly = {}
+    for d in days:
+        key = d["date"][:7]
+        monthly[key] = monthly.get(key, 0) + d["count"]
+    monthly_list = [{"month": k, "total": v} for k, v in sorted(monthly.items())]
 
-    print("[3/3] Computing stats & writing JSON …")
-    stats = compute_stats(days)
+    first_date = days[0]["date"] if days else ""
+    last_date = days[-1]["date"] if days else ""
+
+    stats = {
+        "total_contributions": total,
+        "current_streak": cur_len,
+        "longest_streak": long_len,
+        "best_day": {"date": best["date"], "count": best["count"]},
+        "monthly_totals": monthly,
+        "date_range": {"start": first_date, "end": last_date},
+    }
+
     grid = build_week_grid(days)
 
-    output = {
+    return {
         "username": USERNAME,
-        "fetched_at": datetime.utcnow().isoformat() + "Z",
+        "fetched_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "range": {"start": first_date, "end": last_date},
+        "total_contributions": total,
+        "active_days": active_days,
+        "avg_per_active_day": round(total / active_days, 1) if active_days else 0,
+        "current_streak": {"length": cur_len, "start": cur_start, "end": cur_end},
+        "longest_streak": {"length": long_len, "start": long_start, "end": long_end},
+        "best_day": {"date": best["date"], "count": best["count"]},
+        "monthly": monthly_list,
         "days": days,
         "grid": grid,
         "stats": stats,
     }
 
+
+def main():
+    print(f"[1/3] Fetching contributions from {URL} …")
+    days = fetch_days()
+    print(f"      Parsed {len(days)} days")
+
+    print("[2/3] Computing stats and week grid …")
+    data = build_data(days)
+
+    print(f"[3/3] Writing to {OUT_PATH} …")
     DATA_DIR.mkdir(exist_ok=True)
-    OUT_JSON.write_text(json.dumps(output, indent=2), encoding="utf-8")
-    print(f"✓ Saved → {OUT_JSON}")
-    print(f"  Total: {stats.get('total_contributions', 0)} contributions")
-    print(f"  Current streak: {stats.get('current_streak', 0)} days")
-    print(f"  Longest streak: {stats.get('longest_streak', 0)} days")
+    with open(OUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+    print(f"✓ Saved → {OUT_PATH}")
+    print(f"  Total: {data['total_contributions']} contributions")
+    print(f"  Current streak: {data['current_streak']['length']} days ({data['current_streak']['start']} to {data['current_streak']['end']})")
+    print(f"  Longest streak: {data['longest_streak']['length']} days ({data['longest_streak']['start']} to {data['longest_streak']['end']})")
 
 
 if __name__ == "__main__":

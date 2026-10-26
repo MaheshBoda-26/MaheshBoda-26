@@ -1,144 +1,147 @@
 #!/usr/bin/env python3
 """
-make_ascii_svg.py  —  Step 3b
-Usage:  python scripts/make_ascii_svg.py
+Convert a portrait photo into a CLEAN, monochrome ASCII-art SVG (Andrew6rant
+style: one light-gray color, subject isolated on a dark background) that "types"
+itself in like a terminal, then holds.
 
-Reads scripts/source-prepped.png, downsamples to a character grid (~100×53),
-maps each pixel brightness to a glyph from a density ramp, then emits an SVG
-with row-by-row SMIL animations (left-to-right wipe with a block cursor,
-staggered top-to-bottom, plays once and freezes).
-
-Output: avi-ascii.svg  (repo root)
+Output: mahesh-ascii.svg (repo root)
+Usage: python scripts/make_ascii_svg.py [source-prepped.png] [mahesh-ascii.svg]
 """
-
+import html
+import os
 import pathlib
-import numpy as np
-from PIL import Image
+import sys
+from PIL import Image, ImageEnhance
 
-# ── Configuration ─────────────────────────────────────────────────────────────
-COLS        = 100           # character columns
-FONT_SIZE   = 11            # px — monospace cell
-CHAR_W      = FONT_SIZE * 0.60   # approx char width for monospace
-CHAR_H      = FONT_SIZE * 1.20   # line height
-FILL_COLOR  = "#c8c8c8"     # single light-gray colour — no rainbow
-BG_COLOR    = "none"        # transparent; GitHub renders dark-mode correctly
+HERE = pathlib.Path(__file__).parent
+SRC = sys.argv[1] if len(sys.argv) > 1 else str(HERE / "source-prepped.png")
+OUT = sys.argv[2] if len(sys.argv) > 2 else str(HERE.parent / "mahesh-ascii.svg")
 
-# Density ramp: index 0 = bright (sparse), last = dark (dense)
+COLS = int(os.environ.get("COLS", 180))
+ART_W_TARGET = 800
+CELL_W = ART_W_TARGET / COLS
+CELL_H = CELL_W * 15 / 8
+ROWS = round(COLS * 8 / 15)
 RAMP = " .`:-=+*cs#%@"
 
-SCRIPT_DIR  = pathlib.Path(__file__).parent
-PREPPED     = SCRIPT_DIR / "source-prepped.png"
-OUT_SVG     = SCRIPT_DIR.parent / "avi-ascii.svg"
+CONTRAST = 1.05
+BRIGHTNESS = 1.0
+GAMMA = 1.18
+WHITE_FLOOR = 0.80
 
-# Animation timing
-ROW_DELAY   = 0.06          # seconds between row starts
-CHAR_SPEED  = 0.012         # seconds per character revealed
-CURSOR_W    = int(CHAR_W)   # cursor block width in px
+PAD = 20
+TITLEBAR_H = 30
+STATUS_H = 30
+ART_W = COLS * CELL_W
+ART_H = ROWS * CELL_H
+CANVAS_W = ART_W + PAD * 2
+CANVAS_H = TITLEBAR_H + ART_H + STATUS_H + PAD
 
+BG = "#0d1117"
+BG2 = "#111722"
+FRAME = "#30363d"
+TITLE_TEXT = "#7d8590"
+INK = "#c9d1d9"
+CURSOR = "#c9d1d9"
 
-def image_to_char_grid(img_path: pathlib.Path, cols: int) -> list[str]:
-    """Downsample image and convert each pixel to an ASCII glyph."""
-    img = Image.open(img_path).convert("L")
-    w, h = img.size
-    char_h = int(h * cols / w * 0.45)   # 0.45 corrects for char aspect ratio
-    img = img.resize((cols, char_h), Image.LANCZOS)
-    arr = np.array(img)                  # shape (char_h, cols), uint8
-
-    rows = []
-    for row in arr:
-        line = ""
-        for brightness in row:
-            idx = int(brightness / 255 * (len(RAMP) - 1))
-            # Invert: bright pixel → sparse glyph (start of ramp)
-            line += RAMP[idx]
-        rows.append(line)
-    return rows
+ROW_DUR = 5.8 / ROWS
+STAGGER = ROW_DUR
 
 
-def build_svg(rows: list[str]) -> str:
-    n_rows = len(rows)
-    n_cols = max(len(r) for r in rows)
-    svg_w  = n_cols * CHAR_W
-    svg_h  = n_rows * CHAR_H + CHAR_H   # +1 line padding
+def build_svg():
+    im = Image.open(SRC).convert("L")
+    im = ImageEnhance.Brightness(im).enhance(BRIGHTNESS)
+    im = ImageEnhance.Contrast(im).enhance(CONTRAST)
+    im = im.resize((COLS, ROWS), Image.LANCZOS)
+    px = im.load()
+
+    rows_txt = []
+    for y in range(ROWS):
+        chars = []
+        for x in range(COLS):
+            lum = px[x, y] / 255.0
+            lum = pow(lum, GAMMA)
+            if lum >= WHITE_FLOOR:
+                chars.append(" ")
+                continue
+            idx = int((1.0 - lum) * (len(RAMP) - 1) + 0.5)
+            idx = max(0, min(len(RAMP) - 1, idx))
+            chars.append(RAMP[idx])
+        rows_txt.append("".join(chars))
+
+    art_top = TITLEBAR_H + PAD * 0.35
 
     parts = []
-    parts.append(f"""<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 {svg_w:.1f} {svg_h:.1f}"
-     width="{svg_w:.0f}" height="{svg_h:.0f}">
-  <style>
-    text {{
-      font-family: "Courier New", Courier, monospace;
-      font-size: {FONT_SIZE}px;
-      fill: {FILL_COLOR};
-      white-space: pre;
-    }}
-    rect.cursor {{
-      fill: {FILL_COLOR};
-      opacity: 0.7;
-    }}
-  </style>
-  <rect width="100%" height="100%" fill="{BG_COLOR}"/>
-""")
+    parts.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{CANVAS_W}" height="{CANVAS_H}" '
+        f'viewBox="0 0 {CANVAS_W} {CANVAS_H}" font-family="ui-monospace, SFMono-Regular, '
+        f'Menlo, Consolas, monospace">'
+    )
+    parts.append('<defs>'
+                 f'<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">'
+                 f'<stop offset="0" stop-color="{BG2}"/><stop offset="1" stop-color="{BG}"/>'
+                 f'</linearGradient></defs>')
 
-    for row_i, line in enumerate(rows):
-        y        = (row_i + 1) * CHAR_H          # baseline y
-        row_w    = len(line) * CHAR_W
-        start    = row_i * ROW_DELAY
-        duration = len(line) * CHAR_SPEED
-        end      = start + duration
-        clip_id  = f"clip{row_i}"
+    parts.append(f'<rect width="{CANVAS_W}" height="{CANVAS_H}" rx="12" fill="url(#bg)"/>')
+    parts.append(f'<rect x="0.5" y="0.5" width="{CANVAS_W-1}" height="{CANVAS_H-1}" rx="12" '
+                 f'fill="none" stroke="{FRAME}" stroke-width="1"/>')
 
-        # Clip rect that wipes left→right
-        parts.append(f"""  <defs>
-    <clipPath id="{clip_id}">
-      <rect id="cr{row_i}" x="0" y="{y - CHAR_H:.1f}"
-            width="0" height="{CHAR_H:.1f}">
-        <animate attributeName="width"
-                 from="0" to="{row_w:.1f}"
-                 begin="{start:.3f}s" dur="{duration:.3f}s"
-                 fill="freeze"/>
-      </rect>
-    </clipPath>
-  </defs>""")
+    parts.append(f'<line x1="0" y1="{TITLEBAR_H}" x2="{CANVAS_W}" y2="{TITLEBAR_H}" stroke="{FRAME}"/>')
+    for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
+        parts.append(f'<circle cx="{PAD + i*16}" cy="{TITLEBAR_H/2}" r="5" fill="{dotcol}"/>')
+    parts.append(f'<text x="{CANVAS_W/2}" y="{TITLEBAR_H/2 + 4}" fill="{TITLE_TEXT}" font-size="12" '
+                 f'text-anchor="middle">mahesh@github: ~$ ./portrait.sh</text>')
 
-        # Text element, clipped
-        escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        parts.append(f"""  <text x="0" y="{y:.1f}" clip-path="url(#{clip_id})">{escaped}</text>""")
+    font_size = CELL_H * 0.86
+    for ry, line in enumerate(rows_txt):
+        y = art_top + ry * CELL_H + CELL_H * 0.74
+        row_y = art_top + ry * CELL_H
+        delay = ry * STAGGER
+        safe = html.escape(line)
+        text = (f'<text xml:space="preserve" x="{PAD}" y="{y:.1f}" fill="{INK}" '
+                f'font-size="{font_size:.1f}" textLength="{ART_W}" lengthAdjust="spacing">{safe}</text>')
 
-        # Cursor block rides the wipe edge
-        parts.append(f"""  <rect class="cursor"
-        x="0" y="{y - CHAR_H:.1f}"
-        width="{CURSOR_W}" height="{CHAR_H:.1f}">
-    <animate attributeName="x"
-             from="0" to="{row_w:.1f}"
-             begin="{start:.3f}s" dur="{duration:.3f}s"
-             fill="freeze"/>
-    <animate attributeName="opacity"
-             from="0.7" to="0"
-             begin="{end:.3f}s" dur="0.15s"
-             fill="freeze"/>
-  </rect>""")
+        parts.append(
+            f'<clipPath id="r{ry}"><rect x="{PAD}" y="{row_y:.1f}" height="{CELL_H}" width="0">'
+            f'<animate attributeName="width" from="0" to="{ART_W}" begin="{delay:.3f}s" '
+            f'dur="{ROW_DUR:.2f}s" fill="freeze"/></rect></clipPath>'
+        )
+        parts.append(f'<g clip-path="url(#r{ry})">{text}</g>')
+        parts.append(
+            f'<rect y="{row_y+1:.1f}" width="{CELL_W}" height="{CELL_H-2}" fill="{CURSOR}" opacity="0">'
+            f'<animate attributeName="x" from="{PAD}" to="{PAD+ART_W}" begin="{delay:.3f}s" '
+            f'dur="{ROW_DUR:.2f}s" fill="freeze"/>'
+            f'<set attributeName="opacity" to="0.85" begin="{delay:.3f}s"/>'
+            f'<set attributeName="opacity" to="0" begin="{delay+ROW_DUR:.3f}s"/></rect>'
+        )
+
+    status_line_y = TITLEBAR_H + ART_H + PAD * 0.35
+    status_y = status_line_y + 19
+    parts.append(f'<line x1="0" y1="{status_line_y:.1f}" x2="{CANVAS_W}" y2="{status_line_y:.1f}" stroke="{FRAME}"/>')
+    status_text = "mahesh@github:~$ whoami "
+    name_text = "Mahesh Boda"
+    parts.append(f'<text x="{PAD}" y="{status_y:.1f}" fill="{TITLE_TEXT}" font-size="13">'
+                 f'{status_text}<tspan fill="{INK}">{name_text}</tspan></text>')
+    status_chars = len(status_text + name_text + " ")
+    parts.append(f'<rect x="{PAD + status_chars * 13 * 0.6:.1f}" y="{status_y-12:.1f}" width="8" height="14" fill="{INK}">'
+                 f'<animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.51;1" '
+                 f'dur="1s" repeatCount="indefinite"/></rect>')
 
     parts.append("</svg>")
-    return "\n".join(parts)
+    return "".join(parts)
 
 
 def main():
-    if not PREPPED.exists():
-        raise FileNotFoundError(
-            f"Prepped image not found: {PREPPED}\n"
-            "Run  python scripts/prep_photo.py <source_image>  first."
-        )
-    print(f"[1/2] Converting {PREPPED.name} to ASCII grid …")
-    rows = image_to_char_grid(PREPPED, COLS)
-    print(f"      Grid: {len(rows[0])} cols × {len(rows)} rows")
+    if not os.path.exists(SRC):
+        print(f"Error: {SRC} does not exist. Run prep_photo.py first.", file=sys.stderr)
+        sys.exit(1)
 
-    print("[2/2] Building SVG …")
-    svg = build_svg(rows)
-    OUT_SVG.write_text(svg, encoding="utf-8")
-    print(f"✓ Saved → {OUT_SVG}")
+    print(f"[1/2] Converting {SRC} to ASCII grid …")
+    svg = build_svg()
+    print(f"[2/2] Writing to {OUT} …")
+    with open(OUT, "w", encoding="utf-8") as f:
+        f.write(svg)
+    print(f"✓ Saved → {OUT} ({CANVAS_W} x {CANVAS_H})")
 
 
 if __name__ == "__main__":
